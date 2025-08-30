@@ -11,11 +11,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookWriteQueue {
     private final BlockingQueue<Book> queue = new LinkedBlockingQueue<>();
-    public void enqueue(Book b) { queue.add(b); }
+
+    public void enqueue(Book b) {
+        queue.add(b);
+    }
+
     public List<Book> drainBatch(int max, long waitMillis) throws InterruptedException {
         List<Book> batch = new ArrayList<>(max);
+
         Book first = queue.poll(waitMillis, TimeUnit.MILLISECONDS);
-        if (first != null) batch.add(first);
+        if (first != null) {
+            batch.add(first);
+        }
+
         queue.drainTo(batch, max - batch.size());
         return batch;
     }
