@@ -1,1 +1,11 @@
-spring.application.name=selenium-training
+spring:
+  application:
+    name: selenium-training
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:./data/books.db?journal_mode=WAL&busy_timeout=5000&synchronous=NORMAL
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    show-sql: true
