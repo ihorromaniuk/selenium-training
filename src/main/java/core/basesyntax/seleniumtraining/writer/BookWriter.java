@@ -16,14 +16,15 @@ public class BookWriter implements SmartLifecycle {
     private final BookService bookService;
     private volatile boolean running;
 
-    @Override public void start() {
+    @Override
+    public void start() {
         running = true;
         Thread t = new Thread(() -> {
             while (running) {
                 try {
                     List<Book> batch = queue.drainBatch(100, 200);
                     if (!batch.isEmpty()) {
-                        bookService.saveAll(batch); // @Transactional
+                        bookService.saveAll(batch);
                     }
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
@@ -35,6 +36,14 @@ public class BookWriter implements SmartLifecycle {
         t.setDaemon(true);
         t.start();
     }
-    @Override public void stop() { running = false; }
-    @Override public boolean isRunning() { return running; }
+
+    @Override
+    public void stop() {
+        running = false;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
 }
